@@ -16,6 +16,14 @@ type API struct {
 	context Context
 }
 
+// The remote endpoints
+const (
+	API_URL_DEMO    = "https://api-fxpractice.oanda.com"
+	STREAM_URL_DEMO = "https://stream-fxpractice.oanda.com"
+	API_URL_LIVE    = "https://api-fxtrade.oanda.com"
+	STREAM_URL_LIVE = "https://stream-fxtrade.oanda.com"
+)
+
 // GetOpenPositions gets the open Positions on the account
 func (api *API) GetOpenPositions() (*models.AccountPositions, error) {
 	client := &http.Client{}
