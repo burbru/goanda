@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/xtordoir/goanda/api"
-	"github.com/xtordoir/goanda/models"
+	"github.com/burbru/goanda/api"
+	"github.com/burbru/goanda/models"
 )
 
 func transactionProcessor(c chan models.Transaction) {
@@ -70,5 +70,5 @@ func main() {
 	//streamapi.PricingStream([]string{"EUR_USD", "BCO_USD", "SPX500_USD", "EUR_JPY"}, pchan, hchan)
 
 	streamapi.StartTransactionStream(tchan, hchan)
-	select{}
+	select {}
 }

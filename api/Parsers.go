@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/xtordoir/goanda/models"
+	"github.com/burbru/goanda/models"
 )
 
 func parseAccountOpenPositions(msg *[]byte) (models.AccountPositions, error) {

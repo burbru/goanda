@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
-	"github.com/xtordoir/goanda/models"
+	"github.com/burbru/goanda/models"
 )
 
 // API is an api instance with a context to call endpoints
@@ -33,7 +33,7 @@ func (api *API) GetOpenPositions() (*models.AccountPositions, error) {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	} //fmt.Println(string(data))
@@ -60,7 +60,7 @@ func (api *API) GetPosition(instrument string) (*models.AccountPosition, error) 
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	}
@@ -91,7 +91,7 @@ func (api *API) GetPricing(instruments []string) (*models.Prices, error) {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	} //fmt.Println(string(data))
@@ -120,7 +120,7 @@ func (api *API) GetCandles(instrument string, num int, granularity string) (*mod
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	} //fmt.Println(string(data))
@@ -155,7 +155,7 @@ func (api *API) PostMarketOrder(instrument string, units int64) (error, error) {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errp := ioutil.ReadAll(response.Body)
+	data, errp := io.ReadAll(response.Body)
 
 	fmt.Println(string(data))
 	//	orderStatus, _ := parseOrderStatus(&data)
@@ -182,7 +182,7 @@ func (api *API) GetPositionBook(instrument string) (*models.PositionBook, error)
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	}
@@ -209,7 +209,7 @@ func (api *API) GetAccounts() (*models.Accounts, error) {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := ioutil.ReadAll(response.Body)
+	data, errb := io.ReadAll(response.Body)
 	if errb != nil {
 		return nil, errb
 	}

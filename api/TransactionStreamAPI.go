@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xtordoir/goanda/models"
+	"github.com/burbru/goanda/models"
 )
 
 // StreamAPI is an api instance with a context to call endpoints

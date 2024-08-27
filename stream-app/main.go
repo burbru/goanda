@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/xtordoir/goanda/api"
-	"github.com/xtordoir/goanda/models"
+	"github.com/burbru/goanda/api"
+	"github.com/burbru/goanda/models"
 )
 
 func priceProcessor(c chan models.ClientPrice) {
