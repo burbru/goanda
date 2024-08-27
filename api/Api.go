@@ -81,61 +81,28 @@ func (api *API) GetPosition(instrument string) (*models.AccountPosition, error) 
 
 // GetPricing fetches the prricing for a list of instruments
 func (api *API) GetPricing(instruments []string) (*models.Prices, error) {
-
 	instrumentsQstr := strings.Join(instruments, ",")
-	// TODO DEDUPLICATE THIS
-	client := &http.Client{}
-	account := api.context.Account
-	apiURL := api.context.ApiURL
-	token := api.context.Token
-	req, errr := http.NewRequest("GET", apiURL+"/v3/accounts/"+account+"/pricing?instruments="+instrumentsQstr, nil)
-	if errr != nil {
-		return nil, errr
-	}
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer "+token)
-	response, err := client.Do(req)
+	data, err := SendRequest("GET", api.context.ApiURL+"/v3/accounts/"+api.context.Account+"/pricing?instruments="+instrumentsQstr, nil)
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := io.ReadAll(response.Body)
-	if errb != nil {
-		return nil, errb
-	} //fmt.Println(string(data))
-	prices, errp := parsePrices(&data)
-	//fmt.Println(positions)
 
-	return &prices, errp
+	prices, err := parsePrices(&data)
+
+	return &prices, err
 }
 
 // GetCandles fetches a number of candles for a given instrument and granularity
 func (api *API) GetCandles(instrument string, num int, granularity string) (*models.Candles, error) {
-	// TODO DEDUPLICATE THIS
-	client := &http.Client{}
-	account := api.context.Account
-	apiURL := api.context.ApiURL
-	token := api.context.Token
 	qStr := fmt.Sprintf("?granularity=%s&count=%d", granularity, num)
-	req, errr := http.NewRequest("GET", apiURL+"/v3/accounts/"+account+"/instruments/"+instrument+"/candles"+qStr, nil)
-	if errr != nil {
-		return nil, errr
-	}
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer "+token)
-	response, err := client.Do(req)
+	data, err := SendRequest("GET", api.context.ApiURL+"/v3/accounts/"+api.context.Account+"/instruments/"+instrument+"/candles"+qStr, nil)
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
 		return nil, err
 	}
-	data, errb := io.ReadAll(response.Body)
-	if errb != nil {
-		return nil, errb
-	} //fmt.Println(string(data))
-	candles, errp := parseCandles(&data)
-	//fmt.Println(positions)
 
-	return &candles, errp
+	candles, err := parseCandles(&data)
+
+	return &candles, err
 }
 
 // PostMarketOrder posts a Market orderr a number of candles for a given instrument and granularity

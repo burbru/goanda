@@ -11,6 +11,7 @@ type Context struct {
 
 // CreateAPI Creates an api instance from the Context
 func (context *Context) CreateAPI() API {
+	SetToken(context.Token)
 	return API{
 		context: *context,
 	}
