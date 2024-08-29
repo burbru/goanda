@@ -92,9 +92,21 @@ func (api *API) GetPricing(instruments []string) (*models.Prices, error) {
 	return &prices, err
 }
 
+type PriceComponent string
+
+const (
+	PriceComponentAsk       PriceComponent = "A"
+	PriceComponentBid       PriceComponent = "B"
+	PriceComponentMid       PriceComponent = "M"
+	PriceComponentAskBid    PriceComponent = "AB"
+	PriceComponentAskMid    PriceComponent = "AM"
+	PriceComponentBidMid    PriceComponent = "BM"
+	PriceComponentAskBidMid PriceComponent = "ABM"
+)
+
 // GetCandles fetches a number of candles for a given instrument and granularity
-func (api *API) GetCandles(instrument string, num int, granularity string) (*models.Candles, error) {
-	qStr := fmt.Sprintf("?granularity=%s&count=%d", granularity, num)
+func (api *API) GetCandles(instrument string, num int, granularity string, priceComponent PriceComponent) (*models.Candles, error) {
+	qStr := fmt.Sprintf("?price=%s&granularity=%s&count=%d", priceComponent, granularity, num)
 	data, err := SendRequest("GET", api.context.ApiURL+"/v3/accounts/"+api.context.Account+"/instruments/"+instrument+"/candles"+qStr, nil)
 	if err != nil {
 		return nil, err
