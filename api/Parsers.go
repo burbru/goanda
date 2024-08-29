@@ -55,3 +55,10 @@ func parseAccounts(msg *[]byte) (models.Accounts, error) {
 
 	return acc, err
 }
+
+func parseInstruments(msg *[]byte) (models.Instruments, error) {
+	var ins models.Instruments
+	err := json.Unmarshal(*msg, &ins)
+
+	return ins, err
+}

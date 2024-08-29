@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/burbru/goanda/models"
 )
@@ -15,14 +14,6 @@ import (
 type API struct {
 	context Context
 }
-
-// The remote endpoints
-const (
-	API_URL_DEMO    = "https://api-fxpractice.oanda.com"
-	STREAM_URL_DEMO = "https://stream-fxpractice.oanda.com"
-	API_URL_LIVE    = "https://api-fxtrade.oanda.com"
-	STREAM_URL_LIVE = "https://stream-fxtrade.oanda.com"
-)
 
 // GetOpenPositions gets the open Positions on the account
 func (api *API) GetOpenPositions() (*models.AccountPositions, error) {
@@ -77,44 +68,6 @@ func (api *API) GetPosition(instrument string) (*models.AccountPosition, error) 
 	//fmt.Println(positions)
 
 	return &positions, errp
-}
-
-// GetPricing fetches the prricing for a list of instruments
-func (api *API) GetPricing(instruments []string) (*models.Prices, error) {
-	instrumentsQstr := strings.Join(instruments, ",")
-	data, err := SendRequest("GET", api.context.ApiURL+"/v3/accounts/"+api.context.Account+"/pricing?instruments="+instrumentsQstr, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	prices, err := parsePrices(&data)
-
-	return &prices, err
-}
-
-type PriceComponent string
-
-const (
-	PriceComponentAsk       PriceComponent = "A"
-	PriceComponentBid       PriceComponent = "B"
-	PriceComponentMid       PriceComponent = "M"
-	PriceComponentAskBid    PriceComponent = "AB"
-	PriceComponentAskMid    PriceComponent = "AM"
-	PriceComponentBidMid    PriceComponent = "BM"
-	PriceComponentAskBidMid PriceComponent = "ABM"
-)
-
-// GetCandles fetches a number of candles for a given instrument and granularity
-func (api *API) GetCandles(instrument string, num int, granularity string, priceComponent PriceComponent) (*models.Candles, error) {
-	qStr := fmt.Sprintf("?price=%s&granularity=%s&count=%d", priceComponent, granularity, num)
-	data, err := SendRequest("GET", api.context.ApiURL+"/v3/accounts/"+api.context.Account+"/instruments/"+instrument+"/candles"+qStr, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	candles, err := parseCandles(&data)
-
-	return &candles, err
 }
 
 // PostMarketOrder posts a Market orderr a number of candles for a given instrument and granularity
